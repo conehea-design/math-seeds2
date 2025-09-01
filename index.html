@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수학 이야기 씨앗</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-green: #3a5a40;
+            --light-green: #e8f5e9;
+            --point-green: #588157;
+            --button-green: #a3b18a;
+            --button-border: #707c5d;
+            --background-blue: #f0f8ff;
+            --text-dark: #333;
+            --text-light: #555;
+            --input-background: #fafafa;
+            --danger-red: #c94a4a;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--background-blue);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .app-container {
+            width: 90%;
+            max-width: 600px;
+        }
+
+        #start-screen {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            padding: 40px;
+            text-align: center;
+        }
+
+        #start-screen h1 {
+            color: var(--main-green);
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        #start-screen p {
+            color: var(--text-light);
+            font-size: 1.2em;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .chapter-btn {
+            background-color: var(--light-green);
+            border: 2px solid var(--point-green);
+            border-radius: 15px;
+            padding: 20px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--main-green);
+        }
+
+        .chapter-btn:hover {
+            background-color: var(--point-green);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        #game-screen { display: none; }
+        .container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            text-align: center;
+        }
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        h1.game-title {
+            color: var(--main-green);
+            font-size: 1.8em;
+            margin: 0;
+            text-align: left;
+        }
+        #attempts-tracker {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--danger-red);
+        }
+
+        .story-container {
+            background-color: var(--light-green);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 1.2em;
+            color: #2e7d32;
+            line-height: 1.6;
+            text-align: left;
+        }
+        .question-container {
+            font-size: 1.3em;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .option-btn {
+            background-color: var(--button-green);
+            border: none;
+            border-radius: 15px;
+            padding: 20px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            color: white;
+            border-bottom: 5px solid var(--button-border);
+            text-align: left;
+        }
+        .option-btn:hover { background-color: #93a076; }
+        .option-btn:active {
+            transform: translateY(2px);
+            border-bottom-width: 3px;
+        }
+        .hint-container {
+            display: none;
+            margin-top: 20px;
+            background-color: #fffde7;
+            border: 2px dashed #fbc02d;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1.2em;
+            color: #f57f17;
+        }
+        .progress-container {
+            margin-top: 30px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #progress-image {
+            height: 100%;
+            transition: transform 0.5s;
+        }
+        .final-message {
+            font-size: 1.8em;
+            color: #d81b60;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        #back-to-start {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 2px solid var(--main-green);
+            background-color: white;
+            color: var(--main-green);
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        #back-to-start:hover {
+            background-color: var(--main-green);
+            color: white;
+        }
+        
+        #text-answer-area { margin-top: 20px; }
+        #text-answer-input {
+            width: 100%;
+            height: 100px;
+            padding: 15px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.1em;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        .submit-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        #submit-text-answer, #mic-btn {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 10px;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        #submit-text-answer {
+            background-color: var(--point-green);
+            color: white;
+        }
+        #submit-text-answer:hover { background-color: var(--main-green); }
+        #mic-btn {
+            background-color: #4a90e2;
+            color: white;
+        }
+        #mic-btn:hover { background-color: #357abd; }
+        #mic-btn.listening {
+            background-color: #d0021b;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(208, 2, 27, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(208, 2, 27, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(208, 2, 27, 0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div id="start-screen">
+            <h1>수학 이야기 씨앗 🌱</h1>
+            <p>공부하고 싶은 단원을 선택해봐!</p>
+            <div class="chapter-grid" id="chapter-selection"></div>
+        </div>
+
+        <div id="game-screen">
+            <div class="container">
+                <div class="game-header">
+                    <h1 class="game-title">수학 이야기 씨앗</h1>
+                    <div id="attempts-tracker">남은 기회: 8</div>
+                </div>
+                <div id="game-area">
+                    </div>
+                <div class="progress-container">
+                    <img id="progress-image" src='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cellipse cx="50" cy="75" rx="20" ry="15" fill="%238B4513"/%3E%3C/svg%3E' alt="씨앗">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chapterInfo = {
+            'chapter1': { name: '1. 수의 ㅂㅇ와 어림하기', fullName: '1. 수의 범위와 어림하기' },
+            'chapter2': { name: '2. 분수의 ㄱㅅ', fullName: '2. 분수의 곱셈' },
+            'chapter3': { name: '3. ㅎㄷ과 대칭', fullName: '3. 합동과 대칭' },
+            'chapter4': { name: '4. 소수의 ㄱㅅ', fullName: '4. 소수의 곱셈' },
+            'chapter5': { name: '5. ㅈㅇㅁㅊ', fullName: '5. 직육면체' },
+            'chapter6': { name: '6. ㅍㄱ과 가능성', fullName: '6. 평균과 가능성' }
+        };
+
+        const allQuizData = {
+            'chapter1': {
+                '하': [
+                    { difficulty: '하', story: "놀이공원의 인기 있는 롤러코스터는 키가 140cm 이상인 어린이만 탈 수 있어. 안전을 위해 꼭 지켜야 하는 규칙이지. 오늘 놀이공원에 온 지혜의 키를 재어보니 정확히 140cm였어. 지혜는 과연 롤러코스터를 탈 수 있을까?", question: "'140cm 이상'이라는 말은 140cm를 포함하는 것일까?", options: [{ text: "네, 140cm와 같거나 큰 수를 의미하므로 탈 수 있어요.", isCorrect: true }, { text: "아니요, 140cm보다 커야만 하므로 탈 수 없어요.", isCorrect: false }], hint: "'이상'은 기준 수를 포함해서, 같거나 큰 수를 의미해." },
+                    { difficulty: '하', story: "마트에서 '7세 이하 어린이에게만 사탕 증정' 이벤트를 하고 있어. 행사에 참여한 동생의 나이가 7살이라면, 사탕을 받을 수 있을까?", question: "정확히 7살인 어린이는 사탕을 받을 수 있을까?", options: [{ text: "네, '이하'는 7살과 같거나 어린 나이를 뜻해요.", isCorrect: true }, { text: "아니요, 7살보다 어려야만 받을 수 있어요.", isCorrect: false }], hint: "'이하'는 기준이 되는 수를 포함해." }
+                ],
+                '중': [
+                    { difficulty: '중', story: "영화관에서 새로 개봉한 영화가 '12세 초과 관람가'래.", question: "이 영화를 볼 수 있는 나이를 바르게 설명한 문장을 골라봐.", options: [{ text: "12살은 볼 수 없고, 13살부터 볼 수 있다는 뜻이야.", isCorrect: true }, { text: "12살을 포함해서 12살보다 나이가 많으면 볼 수 있다는 뜻이야.", isCorrect: false }], hint: "'초과'는 기준 수를 포함하지 않고, 그 수보다 큰 수를 의미해." },
+                    { difficulty: '중', story: "체육 시간에 100m 달리기 기록이 '15초 미만'인 친구들만 대표 선수로 뽑기로 했어.", question: "기록이 정확히 15초인 친구는 대표 선수가 될 수 있을까?", options: [{ text: "아니, '미만'은 15초를 포함하지 않기 때문에 될 수 없어.", isCorrect: true }, { text: "응, 15초는 빠른 기록이니까 당연히 될 수 있어.", isCorrect: false }], hint: "'미만'은 기준이 되는 수를 포함하지 않아." }
+                ],
+                '상-하': [
+                    { difficulty: '상-하', story: "가게에 '5000원 이하인 물건'만 10% 할인을 해준대. 5000원짜리 장난감은 할인이 될까?", question: "5000원 이하'는 5000과 (___)거나 (___) 수를 의미하므로, 5000원짜리 장난감은 할인을 받을 수 있습니다. 괄호에 들어갈 말을 순서대로 적어보세요.", answerKeywords: ["같", "작은"], hint: "'이하'는 기준이 되는 수를 포함할까? 그리고 그 수보다 커야 할까, 작아야 할까?" },
+                    { difficulty: '상-하', story: "반올림하여 십의 자리까지 나타낼 때, 57은 60이 되고 54는 50이 돼.", question: "반올림은 일의 자리 숫자가 (___) 이상이면 올리고, (___) 미만이면 버리는 방법이야. 괄호 안의 숫자를 적어봐.", answerKeywords: ["5", "5"], hint: "기준이 되는 숫자는 무엇일까?" }
+                ],
+                '상-중': [
+                    { difficulty: '상-중', story: "우리 반 친구들의 수학 점수를 보니, 80점 이상 90점 미만인 친구들이 가장 많았어.", question: "이 범위를 '80점부터'와 '90점까지'라는 표현을 사용해서 설명해봐. (단, 90점은 포함되지 않아야 해)", answerKeywords: ["80점부터", "90점까지는 아님", "90점은 안됨", "90점보다 낮"], hint: "'이상'은 '그 점수부터 시작해서'로, '미만'은 '그 점수까지는 아니고 바로 전까지'로 바꿔 말할 수 있어." },
+                    { difficulty: '상-중', story: "물건값이 880원 나왔어. 100원짜리 동전으로만 값을 내려면 900원을 내야 해.", question: "이 상황을 '올림'이라는 단어를 사용해서 설명해봐.", answerKeywords: ["880", "올림", "백의 자리", "900"], hint: "어느 자리까지 나타내기 위해 올림을 한 걸까?" }
+                ],
+                '상-상': [
+                    { difficulty: '상-상', story: "조건: 올림, 1234원, 십의 자리까지", question: "위 조건들을 사용해서 '올림' 개념이 필요한 상황과 그 결과를 이야기로 만들어봐.", answerKeywords: ["1234", "올림", "십", "1240"], hint: "물건을 살 때 10원짜리 동전만 사용할 수 있는 상황을 상상해봐." },
+                    { difficulty: '상-상', story: "조건: 버림, 485개 사탕, 10개씩", question: "위 조건들을 사용해서 '버림' 개념이 필요한 포장 문제를 만들어봐.", answerKeywords: ["485", "버림", "10개", "48묶음"], hint: "사탕을 10개씩 묶어서 팔 때, 몇 묶음까지 팔 수 있을까?" }
+                ]
+            },
+            'chapter2': {
+                '하': [
+                    { difficulty: '하', story: "커다란 초콜릿 한 판을 똑같이 5조각으로 나눴어...", question: "분수와 자연수의 곱셈은 어떻게 계산해야 할까?", options: [{ text: "분모는 그대로 두고, 분자에 자연수를 곱하면 돼.", isCorrect: true }, { text: "분자는 그대로 두고, 분모에 자연수를 곱해야 해.", isCorrect: false }], hint: "조각의 크기(분모)는 변하지 않고, 조각의 개수(분자)만 늘어났어." },
+                    { difficulty: '하', story: "케이크 한 판을 4조각으로 나눈 것 중 1조각(1/4)이 2개 있다면...", question: " (1/4) × 2 를 계산하는 올바른 방법을 골라봐.", options: [{ text: "분자 1에 2를 곱해서 2/4가 돼.", isCorrect: true }, { text: "분모 4에 2를 곱해서 1/8이 돼.", isCorrect: false }], hint: "조각의 개수가 2배가 되는 거야." }
+                ],
+                '중': [
+                    { difficulty: '중', story: "어제 피자 한 판의 1/2을 먹고 남은 양이 있었어. 오늘 그 남은 피자의 1/2을 또 먹었지.", question: "내가 오늘 먹은 피자의 양은 전체 피자의 얼마만큼일까?", options: [{ text: "남은 양(1/2)의 부분이므로, (1/2) × (1/2) = 1/4 이야.", isCorrect: true }, { text: "두 조각을 먹었으니 (1/2) + (1/2) = 1 이야.", isCorrect: false }], hint: "'~의 ~만큼' 이라는 표현은 곱셈으로 계산할 수 있어." },
+                     { difficulty: '중', story: "밀가루 3/4 컵이 있었는데, 쿠키를 만들려고 그 양의 1/3을 사용했어.", question: "사용한 밀가루의 양을 구하는 올바른 식은 무엇일까?", options: [{ text: "(3/4) × (1/3)", isCorrect: true }, { text: "(3/4) - (1/3)", isCorrect: false }], hint: "전체 양의 일부분을 구할 때는 곱셈을 사용해." }
+                ],
+                '상-하': [
+                    { difficulty: '상-하', story: "진분수의 곱셈 (2/3) × (4/5)를 계산하면 어떻게 될까?", question: "계산 결과는 분수로 어떻게 될까요? 목소리로 답하거나 직접 입력해보세요.", answerKeywords: ["8/15"], hint: "분자는 분자끼리, 분모는 분모끼리 곱하면 돼." },
+                    { difficulty: '상-하', story: "대분수의 곱셈 1과 1/2 × 2와 1/3 을 하려면, 먼저 대분수를 가분수로 바꿔야 해.", question: "1과 1/2은 (___)/2 이고, 2와 1/3은 (___)/3 이야. 괄호 안의 숫자를 순서대로 적어봐.", answerKeywords: ["3", "7"], hint: "(자연수 × 분모) + 분자 를 계산해서 가분수의 분자를 구하지." }
+                ],
+                '상-중': [
+                     { difficulty: '상-중', story: "나는 케이크 한 판의 1/4을 가지고 있었는데, 그중에서 절반을 친구에게 주었어.", question: "내가 친구에게 준 케이크의 양을 '곱'이라는 단어 대신 '배'라는 단어를 사용해서 설명해봐.", answerKeywords: ["1/4", "1/2", "배", "1/8"], hint: "절반은 1/2배와 같은 말이야. '~의 ~배'는 곱셈으로 나타낼 수 있어." },
+                     { difficulty: '상-중', story: "운동장 한 바퀴는 3/5 km 야. 내가 2바퀴를 돌았다면 총 6/5 km를 달린 셈이지.", question: "이 상황을 '분수와 자연수의 곱셈' 개념을 사용해서 설명해봐.", answerKeywords: ["3/5", "2", "곱하", "6/5"], hint: "같은 거리를 여러 번 반복해서 갔을 때, 전체 거리를 어떻게 구할까?" }
+                ],
+                '상-상': [
+                    { difficulty: '상-상', story: "조건: 곱셈, 2 × 4, 가족 사탕", question: "위 조건들을 사용해서 '자연수의 곱셈'의 의미가 잘 드러나는 이야기 문제를 만들어봐.", answerKeywords: ["가족", "4명", "2개", "8개", "모두"], hint: "'묶어 세기' 개념을 넣어봐." },
+                    { difficulty: '상-상', story: "조건: 분수의 곱셈, 1/2, 1/3, 피자", question: "위 조건들을 사용해서 '분수 × 분수' 개념이 필요한 이야기 문제를 만들어봐.", answerKeywords: ["피자", "반", "1/2", "1/3", "1/6"], hint: "피자가 반 조각 남았는데, 그 남은 것의 1/3을 먹는다면...?" }
+                ]
+            },
+            'chapter3': {
+                '하': [
+                    { difficulty: '하', story: "종이를 반으로 접어서 하트 모양을 오렸더니, 양쪽 모양과 크기가 똑같은 하트가 나왔어! 이렇게 모양과 크기가 똑같아서 완전히 포갤 수 있는 두 도형을 뭐라고 부를까?", question: "모양과 크기가 같아 완전히 겹치는 두 도형의 관계를 무엇이라고 할까?", options: [{ text: "합동", isCorrect: true }, { text: "대칭", isCorrect: false }], hint: "서로 완전히 똑같은 쌍둥이 도형을 생각하면 쉬워." },
+                    { difficulty: '하', story: "나비의 날개를 보면 가운데 몸을 기준으로 양쪽 날개의 무늬가 똑같아. 마치 데칼코마니처럼 말이야. 이렇게 한 직선을 따라 접었을 때 완전히 겹치는 도형을 선대칭도형이라고 해.", question: "선대칭도형의 중심이 되는 그 선을 무엇이라고 부를까?", options: [{ text: "대칭축", isCorrect: true }, { text: "대칭의 중심", isCorrect: false }], hint: "'선'대칭도형이니까, 중심이 되는 것도 '선'이 아닐까?" }
+                ],
+                '중': [
+                    { difficulty: '중', story: "서로 합동인 삼각형 두 개가 있어. 한 삼각형의 변의 길이가 각각 5cm, 6cm, 7cm라면, 다른 삼각형에서 가장 긴 변의 길이는 몇 cm일까?", question: "합동인 도형에서, 대응하는 변의 길이는 어떨까?", options: [{ text: "서로 길이가 같으므로 7cm야.", isCorrect: true }, { text: "모양만 같고 길이는 다를 수 있어.", isCorrect: false }], hint: "합동은 모양과 '크기'가 모두 같은 관계야." },
+                    { difficulty: '중', story: "평행사변형은 점대칭도형이야. 어떤 점을 중심으로 180도 돌리면 원래 모습과 똑같이 겹쳐져.", question: "평행사변형을 180도 돌렸을 때, 원래의 위치와 겹쳐지는 각의 크기는 어떨까?", options: [{ text: "대응하는 각이므로 크기가 같아.", isCorrect: true }, { text: "위치가 바뀌었으니 크기도 달라져.", isCorrect: false }], hint: "점대칭도형의 성질을 생각해봐. 돌려도 모양과 크기는 변하지 않아." }
+                ],
+                '상-하': [
+                    { difficulty: '상-하', story: "선대칭도형에서 대칭축을 따라 접으면 대응변끼리 완전히 겹쳐져.", question: "변 ㄱㄴ의 대응변이 변 ㄷㄹ일 때, 두 변의 길이는 서로 (___).", answerKeywords: ["같다"], hint: "대칭축을 기준으로 접었을 때 완전히 포개지는 변을 찾아봐." },
+                    { difficulty: '상-하', story: "점대칭도형의 대칭의 중심은 대응점끼리 이은 선분을 둘로 똑같이 나누는 성질이 있어.", question: "대응점 ㄱ과 점 ㄷ을 이은 선분의 길이가 10cm라면, 대칭의 중심부터 점 ㄱ까지의 거리는 (___)cm 입니다.", answerKeywords: ["5"], hint: "전체 길이의 절반이 될 거야." }
+                ],
+                '상-중': [
+                    { difficulty: '상-중', story: "합동인 두 삼각형에서 각 ㄱㄴㄷ의 대응각은 각 ㄹㅁㅂ이야.", question: "'대응각'이라는 말을 쓰지 않고, 두 각의 관계를 '포갠다', '겹친다'는 표현을 사용해서 설명해봐.", answerKeywords: ["포개", "겹치"], hint: "두 도형을 합쳐볼 때, 어떤 위치에 있는 각일까?" },
+                    { difficulty: '상-중', story: "정사각형은 선대칭도형이면서 점대칭도형이기도 해.", question: "정사각형이 왜 '점대칭도형'인지, '180도'와 '중심'이라는 단어를 사용해서 설명해봐.", answerKeywords: ["중심", "180도", "돌리", "겹치"], hint: "정사각형의 두 대각선이 만나는 점을 중심으로 돌리면 어떻게 될까?" }
+                ],
+                '상-상': [
+                    { difficulty: '상-상', story: "조건: 선대칭, 보물지도, 접기", question: "위 조건들을 사용해서 '선대칭'의 개념이 잘 드러나는 보물찾기 이야기를 만들어봐.", answerKeywords: ["지도", "선", "축", "접어", "보물"], hint: "지도의 어떤 선을 따라 접었더니, 두 지점이 겹쳐지는 곳에 보물이 숨겨져 있는 이야기를 상상해봐." },
+                    { difficulty: '상-상', story: "조건: 합동, 쿠키, 두 개", question: "위 조건들을 사용해서 '합동'의 개념이 필요한 쿠키 만들기 이야기를 만들어봐.", answerKeywords: ["쿠키", "모양", "크기", "똑같", "합동"], hint: "똑같은 모양의 쿠키 틀로 찍어낸 두 쿠키는 서로 어떤 관계일까?" }
+                ]
+            },
+            'chapter4': {}, 'chapter5': {}, 'chapter6': {}
+        };
+        
+        // --- Web Speech API Setup ---
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.lang = 'ko-KR';
+            recognition.interimResults = false;
+        }
+
+        const difficultyOrder = ['하', '중', '상-하', '상-중', '상-상'];
+        let currentDifficultyIndex = 0;
+        let attemptsLeft = 8;
+        let score = 0; 
+        let chapterQuestions = {};
+        let questionIndices = {};
+
+        const startScreenEl = document.getElementById('start-screen');
+        const gameScreenEl = document.getElementById('game-screen');
+        const chapterSelectionEl = document.getElementById('chapter-selection');
+        const gameTitleEl = gameScreenEl.querySelector('.game-title');
+        const attemptsTrackerEl = document.getElementById('attempts-tracker');
+        const gameAreaEl = document.getElementById('game-area');
+        const progressImage = document.getElementById('progress-image');
+
+        function startGame(chapterKey) {
+            startScreenEl.style.display = 'none';
+            gameScreenEl.style.display = 'block';
+            gameTitleEl.textContent = chapterInfo[chapterKey].fullName;
+
+            chapterQuestions = JSON.parse(JSON.stringify(allQuizData[chapterKey]));
+            questionIndices = {};
+            for (const difficulty in chapterQuestions) {
+                if (chapterQuestions[difficulty]) {
+                    shuffleArray(chapterQuestions[difficulty]);
+                    questionIndices[difficulty] = 0;
+                }
+            }
+            
+            currentDifficultyIndex = 0;
+            attemptsLeft = 8;
+            score = 0;
+            
+            attemptsTrackerEl.textContent = `남은 기회: ${attemptsLeft}`;
+            resetGameArea();
+            updateProgress();
+            loadQuestion();
+        }
+
+        function resetGameArea() {
+             gameAreaEl.innerHTML = `
+                <div class="story-container" id="story"></div>
+                <div class="question-container" id="question"></div>
+                <div class="options-container" id="options"></div>
+                <div id="text-answer-area" style="display: none;">
+                    <textarea id="text-answer-input" placeholder="여기에 답을 입력하세요..."></textarea>
+                    <div class="submit-area">
+                        <button type="button" id="submit-text-answer">제출하기</button>
+                        ${SpeechRecognition ? '<button type="button" id="mic-btn">🎤 말로 답하기</button>' : ''}
+                    </div>
+                </div>
+                <div class="hint-container" id="hint"></div>
+            `;
+        }
+
+        function shuffleArray(array) {
+            if (!array || array.length === 0) return;
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        function loadQuestion() {
+            if (currentDifficultyIndex >= difficultyOrder.length) {
+                endGame(true); return;
+            }
+            if (attemptsLeft <= 0) {
+                endGame(false); return;
+            }
+
+            const currentDifficulty = difficultyOrder[currentDifficultyIndex];
+            const questionsForLevel = chapterQuestions[currentDifficulty];
+            
+            if (!questionsForLevel || questionsForLevel.length === 0) {
+                endGame(false, true); return;
+            }
+            
+            const qIndex = questionIndices[currentDifficulty];
+            const currentQuiz = questionsForLevel[qIndex];
+            
+            if (!currentQuiz) {
+                endGame(false, true); return;
+            }
+            
+            gameAreaEl.dataset.currentQuiz = JSON.stringify(currentQuiz);
+
+            document.getElementById('story').textContent = currentQuiz.story;
+            document.getElementById('question').textContent = currentQuiz.question;
+            
+            const optionsEl = document.getElementById('options');
+            const textAnswerAreaEl = document.getElementById('text-answer-area');
+            const textAnswerInputEl = document.getElementById('text-answer-input');
+
+            if (currentQuiz.difficulty.startsWith('상')) {
+                optionsEl.style.display = 'none';
+                textAnswerAreaEl.style.display = 'block';
+                textAnswerInputEl.value = '';
+                if (currentQuiz.difficulty === '상-하') textAnswerInputEl.placeholder = "빈칸/분수를 입력하거나 말해보세요...";
+                else if (currentQuiz.difficulty === '상-중') textAnswerInputEl.placeholder = "상황을 다른 표현으로 설명해보세요...";
+                else textAnswerInputEl.placeholder = "주어진 조건으로 이야기 문제를 만들어보세요...";
+            } else {
+                optionsEl.style.display = 'flex';
+                textAnswerAreaEl.style.display = 'none';
+                optionsEl.innerHTML = '';
+                currentQuiz.options.forEach(option => {
+                    const button = document.createElement('button');
+                    button.type = "button";
+                    button.textContent = option.text;
+                    button.classList.add('option-btn');
+                    button.dataset.correct = option.isCorrect;
+                    optionsEl.appendChild(button);
+                });
+            }
+            document.getElementById('hint').style.display = 'none';
+        }
+
+        function handleAnswer(isCorrect) {
+            attemptsLeft--;
+            attemptsTrackerEl.textContent = `남은 기회: ${attemptsLeft}`;
+            const hintEl = document.getElementById('hint');
+            const currentQuiz = JSON.parse(gameAreaEl.dataset.currentQuiz);
+            
+            if (isCorrect) {
+                score++;
+                currentDifficultyIndex++;
+                updateProgress();
+                loadQuestion();
+            } else {
+                hintEl.textContent = `💡 ${currentQuiz.hint}`;
+                hintEl.style.display = 'block';
+                
+                const currentDifficulty = difficultyOrder[currentDifficultyIndex];
+                questionIndices[currentDifficulty]++;
+                if (questionIndices[currentDifficulty] >= chapterQuestions[currentDifficulty].length) {
+                    questionIndices[currentDifficulty] = 0;
+                }
+
+                setTimeout(() => {
+                    loadQuestion();
+                }, 1500);
+            }
+        }
+
+        function handleTextAnswer() {
+            const userInput = document.getElementById('text-answer-input').value;
+            const currentQuiz = JSON.parse(gameAreaEl.dataset.currentQuiz);
+            const keywords = currentQuiz.answerKeywords;
+            
+            const isCorrect = keywords.every(keyword => userInput.replace(/\s/g, '').includes(keyword));
+            handleAnswer(isCorrect);
+        }
+
+        function updateProgress() {
+            const imageUrls = {
+                seed: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cellipse cx="50" cy="75" rx="20" ry="15" fill="%238B4513"/%3E%3C/svg%3E',
+                sprout: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cpath d="M50,70 Q60,50 70,40" stroke="%23228B22" stroke-width="5" fill="none"/%3E%3Cellipse cx="50" cy="75" rx="20" ry="15" fill="%238B4513"/%3E%3C/svg%3E',
+                plant: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cpath d="M50,90 V30 M30,50 Q50,45 50,30 M70,50 Q50,45 50,30" stroke="%23228B22" stroke-width="6" fill="none"/%3E%3C/svg%3E',
+                flower: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cpath d="M50,90 V40" stroke="%23228B22" stroke-width="6" fill="none"/%3E%3Ccircle cx="50" cy="30" r="20" fill="%23FFD700"/%3E%3Ccircle cx="50" cy="30" r="10" fill="%23DAA520"/%3E%3C/svg%3E'
+            };
+            const growthStages = [ imageUrls.seed, imageUrls.sprout, imageUrls.sprout, imageUrls.plant, imageUrls.plant, imageUrls.flower ];
+            progressImage.src = growthStages[score] || imageUrls.seed;
+            
+            if(score > 0){
+                progressImage.style.transform = 'scale(1.1)';
+                setTimeout(() => { progressImage.style.transform = 'scale(1)'; }, 300);
+            }
+        }
+        
+        function endGame(isWin, noQuestions = false) {
+            let message = '';
+            if (noQuestions) {
+                message = `문제가 모두 소진되었어요!<br> 다른 단원에 도전해보세요.`;
+            } else if (isWin) {
+                message = `모든 문제를 해결했어! <br> 예쁜 수학 꽃이 활짝 피었네!`;
+                progressImage.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cpath d="M50,90 V40" stroke="%23228B22" stroke-width="6" fill="none"/%3E%3Ccircle cx="50" cy="30" r="20" fill="%23FFD700"/%3E%3Ccircle cx="50" cy="30" r="10" fill="%23DAA520"/%3E%3C/svg%3E';
+                progressImage.style.transform = 'scale(1.2)';
+            } else {
+                message = `아쉽지만 기회를 모두 사용했어.<br>다시 도전해볼까?`;
+                progressImage.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cellipse cx="50" cy="75" rx="20" ry="15" fill="%238B4513"/%3E%3C/svg%3E';
+            }
+            gameAreaEl.innerHTML = `<div class="final-message">${message}</div>
+            <button type="button" id="back-to-start">단원 선택으로 돌아가기</button>`;
+            
+            document.getElementById('back-to-start').addEventListener('click', () => {
+                gameScreenEl.style.display = 'none';
+                startScreenEl.style.display = 'block';
+                progressImage.style.transform = 'scale(1)';
+            });
+        }
+
+        function parseFraction(text) {
+            const numMap = { '일': '1', '이': '2', '삼': '3', '사': '4', '오': '5', '육': '6', '칠': '7', '팔': '8', '구': '9', '십': '10' };
+            let processedText = text.replace(/\s+/g, '');
+            for(const key in numMap) {
+                processedText = processedText.replace(new RegExp(key, "g"), numMap[key]);
+            }
+            
+            if (processedText.includes('분의')) {
+                const parts = processedText.split('분의');
+                const denominator = parts[0];
+                const numerator = parts[1];
+                if (!isNaN(denominator) && !isNaN(numerator)) {
+                    return `${numerator}/${denominator}`;
+                }
+            }
+            return text;
+        }
+
+        function setupEventListeners() {
+            gameScreenEl.addEventListener('click', (e) => {
+                if (e.target.classList.contains('option-btn')) {
+                    handleAnswer(e.target.dataset.correct === 'true');
+                }
+                if (e.target.id === 'submit-text-answer') {
+                    handleTextAnswer();
+                }
+                if (e.target.id === 'mic-btn' && recognition) {
+                    const micBtn = e.target;
+                    micBtn.classList.add('listening');
+                    micBtn.textContent = '듣는 중...';
+                    recognition.start();
+                }
+            });
+
+            if (recognition) {
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    const textInput = document.getElementById('text-answer-input');
+                    textInput.value = parseFraction(transcript);
+                };
+                recognition.onend = () => {
+                    const micBtn = document.getElementById('mic-btn');
+                    if(micBtn) {
+                       micBtn.classList.remove('listening');
+                       micBtn.textContent = '🎤 말로 답하기';
+                    }
+                };
+                recognition.onerror = (event) => {
+                    console.error("Speech recognition error", event.error);
+                    const micBtn = document.getElementById('mic-btn');
+                     if(micBtn) {
+                       micBtn.classList.remove('listening');
+                       micBtn.textContent = '🎤 말로 답하기';
+                    }
+                };
+            }
+        }
+
+        Object.keys(chapterInfo).forEach(key => {
+            const button = document.createElement('button');
+            button.type = "button";
+            button.classList.add('chapter-btn');
+            button.textContent = chapterInfo[key].name;
+            button.addEventListener('click', () => {
+                const chapterData = allQuizData[key];
+                if (!chapterData || Object.keys(chapterData).length === 0 || !Object.values(chapterData).some(arr => arr && arr.length > 0)) {
+                    alert('아직 준비 중인 단원입니다.');
+                    return;
+                }
+                startGame(key);
+            });
+            chapterSelectionEl.appendChild(button);
+        });
+        
+        setupEventListeners();
+
+    </script>
+</body>
+</html>
+
