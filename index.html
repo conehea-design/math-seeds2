@@ -262,7 +262,7 @@
                     <div id="attempts-tracker">남은 기회: 8</div>
                 </div>
                 <div id="game-area">
-                    </div>
+                </div>
                 <div class="progress-container">
                     <img id="progress-image" src='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cellipse cx="50" cy="75" rx="20" ry="15" fill="%238B4513"/%3E%3C/svg%3E' alt="씨앗">
                 </div>
@@ -347,7 +347,72 @@
                     { difficulty: '상-상', story: "조건: 합동, 쿠키, 두 개", question: "위 조건들을 사용해서 '합동'의 개념이 필요한 쿠키 만들기 이야기를 만들어봐.", answerKeywords: ["쿠키", "모양", "크기", "똑같", "합동"], hint: "똑같은 모양의 쿠키 틀로 찍어낸 두 쿠키는 서로 어떤 관계일까?" }
                 ]
             },
-            'chapter4': {}, 'chapter5': {}, 'chapter6': {}
+            'chapter4': {
+                '하': [
+                    { difficulty: '하', story: "1.5L짜리 음료수가 10개 있어. 전체 음료수의 양을 구하려면 1.5에 10을 곱하면 돼. 소수에 10, 100, 1000을 곱하면 소수점이 오른쪽으로 이동하는 편리한 규칙이 있지.", question: "1.5에 10을 곱하면 소수점은 어디로 이동할까?", options: [{ text: "오른쪽으로 한 칸 이동해서 15가 돼.", isCorrect: true }, { text: "왼쪽으로 한 칸 이동해서 0.15가 돼.", isCorrect: false }], hint: "곱하는 0의 개수만큼 소수점이 오른쪽으로 이동해." },
+                    { difficulty: '하', story: "키가 1m인 나무가 있었는데, 신기한 비료를 주니 키가 1.2배가 되었어. 나무의 키는 원래보다 커졌을까, 작아졌을까? 이렇게 어떤 수에 1보다 큰 소수를 곱하면 결과는 원래 수보다 커진단다.", question: "어떤 수에 1보다 큰 소수를 곱하면 결과는 어떻게 될까?", options: [{ text: "원래 수보다 커진다.", isCorrect: true }, { text: "원래 수보다 작아진다.", isCorrect: false }], hint: "1.2 '배'가 되었다는 말에 집중해봐." }
+                ],
+                '중': [
+                    { difficulty: '중', story: "마법사가 1m짜리 막대기를 0.5배로 줄이는 마법을 사용했어. 마법에 걸린 막대기의 길이는 몇 m일까?", question: "1 곱하기 0.5의 결과는 무엇일까?", options: [{ text: "결과는 0.5m가 되어 원래보다 짧아져.", isCorrect: true }, { text: "결과는 1.5m가 되어 원래보다 길어져.", isCorrect: false }], hint: "어떤 수에 1보다 작은 소수를 곱하면 결과는 원래 수보다 작아져." },
+                    { difficulty: '중', story: "0.2 곱하기 0.3을 계산해야 해. 두 소수의 소수점 아래 자리 수를 더하면, 결과의 소수점 아래 자리 수를 알 수 있어.", question: "0.2와 0.3의 소수점 아래 자리 수는 각각 1개씩이야. 그럼 곱한 결과의 소수점 아래 자리 수는 몇 개일까?", options: [{ text: "두 개를 더해서 2개가 돼. 그래서 결과는 0.06이야.", isCorrect: true }, { text: "그냥 1개야. 그래서 결과는 0.6이야.", isCorrect: false }], hint: "2 곱하기 3은 6이야. 여기서 소수점 위치만 정해주면 돼." }
+                ],
+                '상-하': [
+                    { difficulty: '상-하', story: "3.14 곱하기 100을 하면, 소수점은 오른쪽으로 (___)칸 이동해서, 결과는 (___)가 됩니다.", question: "괄호 안에 알맞은 숫자들을 순서대로 적어보세요.", answerKeywords: ["2", "314"], hint: "100은 0이 두 개 붙어있지?" },
+                    { difficulty: '상-하', story: "소수의 곱셈 2.5 × 0.3을 자연수의 곱셈처럼 계산하면 25 × 3 = 75야.", question: "곱하는 수들의 소수점 아래 자리 수를 더하면 (___)개 이므로, 결과는 (___)가 되어야 해.", answerKeywords: ["2", "0.75"], hint: "2.5는 소수점 아래 한 자리, 0.3도 한 자리. 합치면?" }
+                ],
+                '상-중': [
+                    { difficulty: '상-중', story: "어떤 수에 0.9를 곱했더니 결과가 원래 수보다 작아졌어.", question: "'1보다 작은 수'라는 표현을 사용해서 그 이유를 설명해봐.", answerKeywords: ["1보다", "작은", "곱하", "작아"], hint: "어떤 물건의 0.9배만큼만 가지게 되면, 원래보다 양이 줄어드는 것과 같아." },
+                    { difficulty: '상-중', story: "가로 0.5m, 세로 0.5m인 정사각형 모양 색종이의 넓이는 0.25㎡야.", question: "왜 넓이가 0.5㎡가 아니라 0.25㎡인지 '소수점'과 '자리 수'를 사용해서 설명해봐.", answerKeywords: ["소수점", "자리", "두", "0.25"], hint: "0.5와 0.5의 소수점 아래 자리 수를 합치면 결과의 소수점 아래 자리 수가 돼." }
+                ],
+                '상-상': [
+                    { difficulty: '상-상', story: "조건: 소수의 곱셈, 1.2배, 키", question: "위 조건들을 사용해서 '1보다 큰 소수의 곱셈' 개념이 필요한 성장 이야기를 만들어봐.", answerKeywords: ["키", "1.2배", "곱해", "커졌"], hint: "작년에 비해 키가 1.2배 자랐다면, 키는 어떻게 변했을까?" },
+                    { difficulty: '상-상', story: "조건: 소수의 곱셈, 0.1, 월급", question: "위 조건들을 사용해서 '1보다 작은 소수의 곱셈' 개념이 필요한 저금 이야기를 만들어봐.", answerKeywords: ["월급", "0.1", "십분의 일", "저금"], hint: "월급의 0.1만큼을 저금한다면...?" }
+                ]
+            },
+            'chapter5': {
+                '하': [
+                    { difficulty: '하', story: "우리가 흔히 보는 상자는 대부분 직육면체 모양이야. 직육면체는 평평한 '면', 뾰족한 '꼭짓점', 그리고 면과 면이 만나는 '모서리'로 이루어져 있지.", question: "면과 면이 만나서 생기는 선분을 무엇이라고 할까?", options: [{ text: "모서리", isCorrect: true }, { text: "꼭짓점", isCorrect: false }], hint: "상자의 뼈대를 이루는 부분을 생각해봐." },
+                    { difficulty: '하', story: "정육면체는 모든 모서리의 길이가 같고, 모든 면이 정사각형인 특별한 직육면체야. 마치 주사위처럼 말이지!", question: "정육면체의 면은 어떤 모양일까?", options: [{ text: "모든 면이 똑같은 크기의 정사각형이야.", isCorrect: true }, { text: "면마다 모양과 크기가 다를 수 있어.", isCorrect: false }], hint: "주사위의 각 면을 떠올려봐!" }
+                ],
+                '중': [
+                    { difficulty: '중', story: "직육면체 모양의 방에 서 있다고 상상해봐. 네가 밟고 있는 바닥과 천장은 서로 아무리 늘려도 만나지 않아.", question: "이렇게 서로 만나지 않는 두 면의 관계를 무엇이라고 할까?", options: [{ text: "평행하다.", isCorrect: true }, { text: "수직이다.", isCorrect: false }], hint: "기찻길처럼 나란히 뻗어 나가는 모습을 떠올려봐." },
+                    { difficulty: '중', story: "직육면체의 전개도는 상자를 펼쳐놓은 그림이야. 이 전개도를 다시 접으면 원래의 상자 모양이 되지.", question: "전개도를 접었을 때, 서로 평행한 면(밑면)은 몇 쌍이 생길까?", options: [{ text: "총 6개의 면 중에서 2개씩 짝을 이루어 3쌍이 생겨.", isCorrect: true }, { text: "서로 마주 보는 면은 1쌍뿐이야.", isCorrect: false }], hint: "상자의 뚜껑과 바닥, 앞과 뒤, 옆과 옆을 생각해봐." }
+                ],
+                '상-하': [
+                    { difficulty: '상-하', story: "직육면체는 (___)개의 면, (___)개의 모서리, (___)개의 꼭짓점으로 이루어져 있어.", question: "괄호 안에 알맞은 숫자를 순서대로 적어보세요.", answerKeywords: ["6", "12", "8"], hint: "주변에 있는 상자를 보고 직접 세어봐!" },
+                    { difficulty: '상-하', story: "정육면체는 (___)개의 모서리 길이가 모두 같아.", question: "괄호 안에 알맞은 숫자를 적어보세요.", answerKeywords: ["12"], hint: "직육면체와 모서리의 개수는 같아." }
+                ],
+                '상-중': [
+                    { difficulty: '상-중', story: "방의 바닥 면과 벽면은 서로 만나서直角을 이루고 있어.", question: "이 관계를 '수직'이라는 단어를 사용해서 설명해봐.", answerKeywords: ["바닥", "벽", "수직"], hint: "두 면이 만나서直角을 이룰 때, 두 면은 서로 수직이라고 말해." },
+                    { difficulty: '상-중', story: "직육면체의 겨냥도는 입체도형을 평면에 그린 그림이야.", question: "겨냥도에서 보이는 모서리와 보이지 않는 모서리는 어떻게 다르게 그리는지 '실선'과 '점선'을 사용해서 설명해봐.", answerKeywords: ["보이는", "실선", "보이지 않는", "점선"], hint: "상자의 안쪽 부분은 어떻게 표현할까?" }
+                ],
+                '상-상': [
+                    { difficulty: '상-상', story: "조건: 직육면체, 평행, 수직", question: "주변에 있는 교실을 예로 들어 '평행'과 '수직'인 면의 관계를 설명하는 글을 만들어봐.", answerKeywords: ["교실", "바닥", "천장", "평행", "벽", "수직"], hint: "바닥과 천장, 바닥과 벽, 벽과 벽의 관계를 생각해봐." },
+                    { difficulty: '상-상', story: "조건: 정육면체, 전개도, 주사위", question: "주사위의 마주 보는 면의 눈의 합이 7이 되는 성질을 이용해서 '정육면체 전개도'에 대한 문제를 만들어봐.", answerKeywords: ["전개도", "주사위", "마주 보는", "7"], hint: "전개도의 어느 면과 어느 면이 서로 마주 보게 될까?" }
+                ]
+            },
+            'chapter6': {
+                '하': [
+                    { difficulty: '하', story: "내가 어제는 사탕을 2개 먹고, 오늘은 4개를 먹었어. 엄마가 이틀 동안 '평균' 몇 개를 먹은 거냐고 물어보셨지. 이럴 땐 두 수를 더한 다음 2로 나누면 돼.", question: "내가 이틀 동안 먹은 사탕의 평균 개수는 몇 개일까?", options: [{ text: "(2+4) ÷ 2 = 3개", isCorrect: true }, { text: "그냥 이틀 동안 6개 먹었어.", isCorrect: false }], hint: "전체 개수를 날짜 수로 나누어봐." },
+                    { difficulty: '하', story: "주사위를 던질 때 숫자 7이 나올 수 있을까? 주사위에는 1부터 6까지의 숫자만 적혀 있어.", question: "주사위를 던져서 7이 나올 가능성을 어떻게 말할 수 있을까?", options: [{ text: "불가능하다", isCorrect: true }, { text: "확실하다", isCorrect: false }], hint: "절대로 일어날 수 없는 일이야." }
+                ],
+                '중': [
+                    { difficulty: '중', story: "동전의 앞면과 뒷면이 나올 가능성은 똑같아. 어느 한쪽이 더 잘 나오지 않지.", question: "이렇게 가능성이 똑같을 때, 우리는 어떻게 표현할까?", options: [{ text: "'반반이다'라고 표현해.", isCorrect: true }, { text: "'확실하다'라고 표현해.", isCorrect: false }], hint: "둘 중 하나, 가능성은 절반이야." },
+                    { difficulty: '중', story: "내일 아침에 해가 동쪽에서 뜰 가능성은 어느 정도일까?", question: "이 가능성을 가장 정확하게 표현한 말은 무엇일까?", options: [{ text: "확실하다 (1)", isCorrect: true }, { text: "반반이다 (1/2)", isCorrect: false }], hint: "내일도 해는 반드시 동쪽에서 뜰 거야." }
+                ],
+                '상-하': [
+                    { difficulty: '상-하', story: "수학, 과학, 사회 시험에서 각각 80점, 90점, 100점을 받았어.", question: "세 과목의 평균 점수는 (___)점이야. 괄호 안에 알맞은 숫자를 적어봐.", answerKeywords: ["90"], hint: "세 점수를 모두 더한 다음 3으로 나누면 돼." },
+                    { difficulty: '상-하', story: "주머니 속에 파란 구슬만 5개 들어있어. 여기서 구슬 하나를 꺼낼 때, 파란 구슬이 나올 가능성은 수로 표현하면 (___)이야.", question: "괄호 안에 알맞은 숫자를 적어봐.", answerKeywords: ["1"], hint: "100% 일어나는 일의 가능성은 1로 표현해." }
+                ],
+                '상-중': [
+                    { difficulty: '상-중', story: "우리 모둠 4명의 키 평균은 150cm야.", question: "'평균'의 의미를 살려서, 이 상황을 '키의 합'과 '나누기'를 사용해서 설명해봐.", answerKeywords: ["4명", "키", "합", "4", "나누", "150"], hint: "평균은 어떻게 구했을까? 그 과정을 말로 풀어봐." },
+                    { difficulty: '상-중', story: "내일 비가 올 가능성이 '반반이다'.", question: "이 상황을 숫자를 사용해서 어떻게 표현할 수 있을까?", answerKeywords: ["1/2", "0.5", "50%"], hint: "전체 가능성 1 중에서 절반을 차지한다는 의미야." }
+                ],
+                '상-상': [
+                    { difficulty: '상-상', story: "조건: 평균, 용돈, 4주", question: "위 조건들을 사용해서 '평균'을 구해야 하는 문제를 만들어봐.", answerKeywords: ["4주", "용돈", "평균", "얼마"], hint: "4주 동안 받은 용돈이 각각 다를 때, 한 주에 평균 얼마를 받았는지 묻는 문제를 만들 수 있어." },
+                    { difficulty: '상-상', story: "조건: 가능성, 제비뽑기, 당첨", question: "위 조건들을 사용해서 가능성이 '반반이 아닌' 상황의 문제를 만들어봐.", answerKeywords: ["제비", "10개", "당첨", "1개", "가능성"], hint: "전체 제비 수와 당첨 제비 수를 다르게 설정하면 반반이 아니게 돼." }
+                ]
+            }
         };
         
         // --- Web Speech API Setup ---
@@ -494,7 +559,7 @@
                 const currentDifficulty = difficultyOrder[currentDifficultyIndex];
                 questionIndices[currentDifficulty]++;
                 if (questionIndices[currentDifficulty] >= chapterQuestions[currentDifficulty].length) {
-                    questionIndices[currentDifficulty] = 0;
+                    questionIndices[currentDifficulty] = 0; // Reset index to reuse questions
                 }
 
                 setTimeout(() => {
@@ -625,7 +690,6 @@
         });
         
         setupEventListeners();
-
     </script>
 </body>
 </html>
